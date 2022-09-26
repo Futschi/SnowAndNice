@@ -1,0 +1,156 @@
+<%- include("partials/header") -%>
+
+<h1> Hier stehen Vorgangsdetails des Vorgangs <%=vorgang.vorgangsID%> </h1>
+<div class="dark row">
+  <div class="col-sm-3">
+    <h2>Antragsteller</h2>
+    <% if ( vorgang.nameAst === "") {%>
+    <label for="compNameApplicant">Firmierung</label><br>
+    <input type="text" name="compNameApplicant" value="<%=vorgang.gesellschaftNameAst%>">
+    <label for="compFormApplicant">Form</label><br>
+    <input type="text" name="compFormApplicant" value="<%=vorgang.gesellschaftFormAst%>">
+
+    <%}else{%>
+
+    <label for="degreeApplicant">TITEL</label><br>
+    <input type="text" name="degreeApplicant" value="<%=vorgang.titelAst%>"><br>
+    <label for="fiNameApplicant">VORNAME</label><br>
+    <input type="text" name="fiNameApplicant" value="<%=vorgang.vornameAst%>"><br>
+    <label for="laNameApplicant">NACHNAME</label><br>
+    <input type="text" name="laNameApplicant" value="<%=vorgang.nameAst%>"><br>
+    <label for="birthDateApplicant">GEBURTSDATUM</label><br>
+    <input type="date" name="birthDateApplicant" value="<%=vorgang.geburtstagAst%>"><br>
+
+    <%}%>
+
+    <label for="streetApplicant">STRAßE</label><br>
+    <input type="text" name="nameApplicant" value="<%=vorgang.straßeAst%>"><br>
+    <label for="numberApplicant">NUMMER</label><br>
+    <input type="text" name="numberApplicant" value="<%=vorgang.nummerAst%>"><br>
+    <label for="zipCodeApplicant">PLZ</label><br>
+    <input type="text" name="zipCodeApplicant" value="<%=vorgang.plzAst%>"><br>
+
+    <input class="hidden" type="text" name="rule" value="<%=vorgang.grundlage%>"><br>
+
+  </div>
+  <div class="col-sm-3">
+    <h2>Eigentümer</h2>
+
+    <% if ( vorgang.nameEt === "") {%>
+
+    <label for="compNameOwner">Firmierung</label><br>
+    <input type="text" name="compNameOwner" value="<%=vorgang.gesellschaftNameBt%>"><br>
+    <label for="compFormOwner">Form</label><br>
+    <input type="text" name="compFormOwner" value="<%=vorgang.gesellschaftFormBt%>"><br>
+
+    <%}else{%>
+
+    <label for="degreeOwner">TITEL</label><br>
+    <input type="text" name="degreeOwner" value="<%=vorgang.titelEt%>"><br>
+    <label for="fiNameOwner">VORNAME</label><br>
+    <input type="text" name="fiNameOwner" value="<%=vorgang.vornameEt%>"><br>
+    <label for="laNameOwner">NACHNAME</label><br>
+    <input type="text" name="streetOwner" value="<%=vorgang.nameEt%>"><br>
+    <label for="birthDateOwner">GEBURTSDATUM</label><br>
+    <input type="date" name="birthDateOwner" value="<%=vorgang.geburtstagEt%>"><br>
+
+    <%}%>
+
+    <label for="streetOwner">STRAßE</label><br>
+    <input type="text" name="streetOwner" value="<%=vorgang.straßeEt%>"><br>
+    <label for="streetOwner">NUMMER</label><br>
+    <input type="text" name="numberOwner" value="<%=vorgang.nummerEt%>"><br>
+    <label for="zipCode">PLZ</label><br>
+    <input type="text" name="zipCode" value="<%=vorgang.plzEt%>"><br>
+  </div>
+  <div class="col-sm-3">
+    <h2>Objekt</h2>
+    <label for="plotStreet">STRAßE</label><br>
+    <input type="text" name="plotStreet" value="<%=vorgang.straßeGs%>"><br>
+    <label for="plotZipCode">PLZ</label><br>
+    <input type="text" name="plotZipCode" value="<%=vorgang.plzGs%>"><br>
+    <label for="plotDistrict">BEZIRK | Ortsteil</label><br>
+    <input type="text" name="plotDistrict" value="<%=vorgang.bezirkGs%>"><br>
+    <label for="plotRegistry">Grundbuchamt</label><br>
+    <input type="text" name="plotRegistry" value="<%=vorgang.grundbuchAmtGs%>"><br>
+    <label for="plotSheet">Blatt</label><br>
+    <input type="text" name="plotSheet" value="<%=vorgang.blattGs%>"><br>
+    <label for="originPoint">Anfallstelle BSR</label><br>
+    <input type="text" name="originPoint" value=""><br>
+    <label for="area">GFF</label><br>
+    <textarea name="area" rows="5" cols="107">Informationen zu Gemarkung, Flure, Flurstück...</textarea>
+
+  </div>
+
+</div>
+
+<div class="white row">
+  <h2>Wiedervorlage</h2>
+  <div class="col-sm-4">
+    <h3>Anlegen</h3>
+
+    <form class="" action="/details/<%=vorgang.vorgangsID%>" method="post">
+      <label for="rules">ZUSTÄNDIGKEIT: </label>
+      <select class="" name="responsibility" id="responsibility">
+        <option value="<%=vorgang.zustaendigkeit%>" selected><%=vorgang.zustaendigkeit%> </option>
+        <option value="122">122</option>
+        <option value="123">123</option>
+        <option value="124">124</option>
+        <option value="125">125</option>
+      </select>
+      <br>
+      <label for="">BEZEICHNUNG</label><input type="text" name="description" value="...">
+      <div class="">
+        <label for="date">ZIELDATUM</label>
+        <input type="date" name="date" value="">
+        <button class="add btn btn-outline-dark" type="submit"><strong>+</strong></button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="col-sm-8">
+    <h3>Verlauf</h3>
+    <table class="table table-striped">
+      <tr>
+        <th>Bemerkung</th>
+        <th>Datum</th>
+        <th>Zuständigkeit</th>
+      </tr>
+      <%wiedervorlageList.forEach((wiedervorlage) => {
+    if (wiedervorlage.vorgangsID === vorgang.vorgangsID) {%>
+      <tr>
+        <td><%=wiedervorlage.bemerkung%></td>
+        <td><%=wiedervorlage.datum%></td>
+        <td><input type="text" name="responsibility" size="4" value="<%=wiedervorlage.zustaendigkeit%>"></td>
+      </tr>
+
+      <%
+      }
+    });
+    %>
+    </table>
+  </div>
+</div>
+
+<div class="dark row">
+  <div class="col-sm-4">
+    <h2>Dokumente</h2>
+    <h3>HOCHLADEN</h3>
+    <form  action="/dokument" method="post" enctype="multipart/form-data">
+      <input type="file" class="form-control-file" name="document">
+      <button class="add btn btn-outline-dark" type="submit"><strong>+</strong></button>
+    </form>
+
+  </div>
+  <div class="col-sm-8">
+    <h2>Dokumente erstellen</h2>
+
+  </div>
+
+</div>
+
+
+
+
+<%- include("partials/footer") -%>

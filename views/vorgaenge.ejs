@@ -1,0 +1,68 @@
+<%- include("partials/header") -%>
+<div class="container processes">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3><strong>Hier stehen die Wiedervorlagen für Nutzer <%=user%></strong></h3>
+      <br>
+      <table class="table table-striped">
+        <tr>
+          <th>Bezeichnung</th>
+          <th>Datum</th>
+          <th>Vorgang</th>
+        </tr>
+        <%wiedervorlageList.forEach((wiedervorlage) => {
+        if (wiedervorlage.zustaendigkeit == user) {%>
+        <tr>
+          <td><%=wiedervorlage.bemerkung%></td>
+          <td><%=wiedervorlage.datum%></td>
+          <td><%=wiedervorlage.vorgangsID%></td>
+        </tr>
+        <%}
+      })%>
+      </table>
+    </div>
+
+    <div class="col-sm-8">
+      <h1>Hier stehen die Vorgänge</h1>
+      <table class="table table-striped ">
+        <tr>
+          <th>VorgangsID</th>
+          <th>Grundlage</th>
+          <th>Antragsteller</th>
+          <th>Eigentümer</th>
+          <th>Grundstück</th>
+        </tr>
+        <%vorgangList.forEach((vorgang) =>  {%>
+        <tr>
+          <form class="" action="/<%=vorgang.vorgangsID%>" method="get">
+            <td><%=vorgang.vorgangsID %></td>
+            <td><%=vorgang.grundlage %></td>
+            <% if (vorgang.nameAst === "") {%>
+              <td><%=vorgang.gesellschaftNameAst%> <%=vorgang.gesellschaftFormAst%></td>
+            <%} else {%>
+              <td><%=vorgang.nameAst%> <%=vorgang.vornameAst%></td>
+            <%}%>
+
+            <% if (vorgang.nameEt === "") {%>
+              <td><%=vorgang.gesellschaftNameBt%> <%=vorgang.gesellschaftFormBt%></td>
+            <%} else {%>
+              <td><%=vorgang.nameEt%>, <%=vorgang.vornameEt%></td>
+            <%}%>
+            <td>
+              <%=vorgang.straßeGs%>, <%=vorgang.nummerGs%><br>
+              <%=vorgang.bezirkGs%>
+            </td>
+
+            <td><%=vorgang.vorname%>, <%=vorgang.name %></td>
+            <td><button type="submit">Details</button></td>
+          </form>
+        </tr>
+        <%})%>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<%- include("partials/footer") -%>
