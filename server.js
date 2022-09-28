@@ -2,10 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const multer = require('multer');
-
+const path = require('path');
 
 const app = express();
-
 const port = 3000;
 
 app.set("view engine", "ejs"); /*Setzt EJS als "View Engine" -> Template fest*/
@@ -16,16 +15,18 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public")); /*Middleware, um dem Server "statische" Dateien zur Verfügung zu stellen... z.B. css, js, img https://expressjs.com/de/starter/static-files.html*/
 
-const storage = multer.diskStorage ({
-  destination : (req,file,cb)=>{
-    cb(null, './public/uploads')
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '/public/uploads/'))
   },
-  filename : (req, file, cb)=> {
-    cb(null,Date.now() + "-" + file.originalname )
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname)
   }
 })
 
-const upload = multer({storage : storage});
+const upload = multer({
+  storage: storage
+});
 
 let ruleValue = "0"; /*Initialwert für vorgangNeu.ejs*/
 let antragsteller = "natPer";
@@ -36,42 +37,41 @@ let vorgangsNummer = 1; /*Zählt durch jedes Anlegen eines Vorgangs hoch -> app.
 let vorgangsID = user + "-" + vorgangsNummer; /*ID um durch GET-methode (Vorgangs)details.ejs Aufzurufen*/
 let detailsID = 0;
 
-let vorgangList = [
-  {zustaendigkeit: 122,
-   vorgangsID: "0-122"  ,
-   grundlage: 5517,
-   straßeAst: "Straße 5",
-   nummerAst: 4,
-   plzAst: "12345",
-   nameAst: "Power",
-   vornameAst: "Max",
-   titelAst: "Overlord",
-   geburtstagAst: "",
-   gesellschaftNameAst: "",
-   gesellschaftFormBt: "",
-   vollmachtAst:"",
-   straßeEt:"Wutzkyallee",
-   nummerEt: 3,
-   plzEt: "13245",
-   nameEt: "",
-   vornameEt: "",
-   titelEt: "",
-   geburtstagEt: "",
-   gesellschaftNameBt: "HuGuMu",
-   gesellschaftFormBt: "CoKG",
-   vollmachtEt: "true",
-   straßeGs:"Kurfürstendamm",
-   nummerGs: 666,
-   plzGs: "14325",
-   bezirkGs: "Schöneberg",
-   grundbuchAmtGs: "Schöneberg",
-   blattGs: "12AG541"
-
-   }
-
+let vorgangList = [{
+    zustaendigkeit: 122,
+    vorgangsID: "0-122",
+    grundlage: 5517,
+    straßeAst: "Straße 5",
+    nummerAst: 4,
+    plzAst: "12345",
+    nameAst: "Power",
+    vornameAst: "Max",
+    titelAst: "Overlord",
+    geburtstagAst: "",
+    gesellschaftNameAst: "",
+    gesellschaftFormBt: "",
+    vollmachtAst: "",
+    straßeEt: "Wutzkyallee",
+    nummerEt: 3,
+    plzEt: "13245",
+    nameEt: "",
+    vornameEt: "",
+    titelEt: "",
+    geburtstagEt: "",
+    gesellschaftNameBt: "HuGuMu",
+    gesellschaftFormBt: "CoKG",
+    vollmachtEt: "true",
+    straßeGs: "Kurfürstendamm",
+    nummerGs: 666,
+    plzGs: "14325",
+    bezirkGs: "Schöneberg",
+    grundbuchAmtGs: "Schöneberg",
+    blattGs: "12AG541"
+  }
 ]; /*wird durch db ersetzt*/
+
 let wiedervorlageList = []; /*wird durch db ersetzt*/
-let dokumentList = [];
+let dokumentList = []; /*wird durch db ersetzt*/
 
 function vorgang( /*constructor zum Anlegen eines Vorgangs*/
   zustaendigkeit,
@@ -132,8 +132,7 @@ function vorgang( /*constructor zum Anlegen eines Vorgangs*/
   this.bezirkGs = bezirkGs;
   this.grundbuchAmtGs = grundbuchAmtGs;
   this.blattGs = blattGs;
-}
-
+};
 
 function wiedervorlage(vorgangsID, bemerkung, datum, zustaendigkeit) {
   /*constructor zum Anlegen einer wiedervorlage*/
@@ -141,7 +140,14 @@ function wiedervorlage(vorgangsID, bemerkung, datum, zustaendigkeit) {
   this.bemerkung = bemerkung;
   this.datum = datum;
   this.zustaendigkeit = zustaendigkeit;
+};
 
+function dokument(id, datum, originalName, neuerName) {
+  /*constructor zum hochladen eines Dokuments*/
+  this.id = id;
+  this.datum = datum;
+  this.originalName = originalName;
+  this.neuerName = neuerName;
 }
 
 
@@ -175,13 +181,11 @@ app.get("/:vorgang", function(req, res) {
     if (vorgang.vorgangsID === req.params.vorgang) {
       res.render("details", {
         vorgang: vorgang,
-        wiedervorlageList: wiedervorlageList
+        wiedervorlageList: wiedervorlageList,
+        dokumentList : dokumentList
       });
-    }
-
+    };
   });
-
-
 });
 // Platzhalter Ende
 
@@ -244,31 +248,38 @@ app.post("/vorgangNeu", function(req, res) {
     req.body.plotSheet,
   );
   vorgangList.push(neuerVorgang);
-  // console.log(neuerVorgang);
-  // console.log(vorgangsID);
   vorgangsNummer++;
   vorgangsID = user + "-" + vorgangsNummer;
   res.redirect("/vorgangNeu");
 });
 
 app.post("/details/:wiedervorlage", function(req, res) {
-  console.log(req.body);
+
   let neueWiedervorlage = new wiedervorlage(
     req.params.wiedervorlage,
     req.body.description,
     req.body.date,
     req.body.responsibility
-
   )
   wiedervorlageList.push(neueWiedervorlage);
   res.redirect("/" + req.params.wiedervorlage)
-
-
 });
 
-app.post("/dokument",upload.single("document"),function(req, res){
+app.post("/dokument", upload.single("document"), function(req, res) {
+  let date = new Date();
+  let document = new dokument(
+    req.body.vorgangID,
+    date,
+    req.file.originalname,
+    req.body.neuerName
+  );
 
-console.log(req.file);
+  dokumentList.push(document);
+
+  res.redirect("/" + req.body.vorgangID);
+
+  console.log(req.file);
+  console.log(req.body);
 });
 
 app.listen(port, function() {

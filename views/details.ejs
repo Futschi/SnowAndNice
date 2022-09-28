@@ -136,9 +136,28 @@
 <div class="dark row">
   <div class="col-sm-4">
     <h2>Dokumente</h2>
+    <table class="table table-striped">
+      <tr>
+        <th>Hochgeladen am</th>
+        <th>Name</th>
+      </tr>
+      <%dokumentList.forEach((dokument) => {
+    if (dokument.id === vorgang.vorgangsID) {%>
+      <tr>
+        <td><%=dokument.datum%></td>
+        <td><%=dokument.neuerName%></td>
+      </tr>
+
+      <%
+      }
+    });
+    %>
+    </table>
     <h3>HOCHLADEN</h3>
     <form  action="/dokument" method="post" enctype="multipart/form-data">
       <input type="file" class="form-control-file" name="document">
+      <input type="text" class="hidden" name="vorgangID" value="<%=vorgang.vorgangsID%>">
+      <input type="text" name="neuerName" value="">
       <button class="add btn btn-outline-dark" type="submit"><strong>+</strong></button>
     </form>
 
