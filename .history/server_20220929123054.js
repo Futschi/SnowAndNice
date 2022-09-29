@@ -7,31 +7,6 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-var connection = mysql.createConnection({
-  connectionLimit: 10,
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "wiedervorlagen_db",
-});
-
-connection.connect(function (err) {
-  if (!err) {
-    console.log("Database is connected");
-  } else {
-    console.log("Error while connection with database");
-  }
-});
-
-app.get("/createdb", (req, res) => {
-  let sql = "CREATE DATABASE wiedervorlagen_db";
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log("result");
-    res.send("Database Created");
-  });
-});
-
 app.set("view engine", "ejs"); /*Setzt EJS als "View Engine" -> Template fest*/
 
 app.use(bodyParser.urlencoded({
