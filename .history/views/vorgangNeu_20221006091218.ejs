@@ -1,0 +1,799 @@
+<%- include("partials/header") -%>
+
+<div class="container vorgangNeuContainer">
+  <form action="/form" method="post">
+    <label for="rules">Rechtsgrundlage: </label>
+    <select class="" name="rules" id="rules" onchange="this.form.submit()">
+      <option value="0">wähle Formular</option>
+      <option value="5560">5560</option>
+      <option value="5570">5570</option>
+      <option value="5571">5571</option>
+      <option value="5572">5572</option>
+      <option value="5501">5501</option>
+      <option value="5502">5502</option>
+      <option value="5503">5503</option>
+      <option value="5504">5504</option>
+      <option value="5506">5506</option>
+    </select>
+  </form>
+
+  <%switch (ruleValue) {
+      case "0": %>
+  <div class="vorgangForm">
+    <h3>Willkommen! Hier legst du einen neuen Vorgang an.</h3>
+  </div>
+  <%break;%>
+  <%case "5571": %>
+
+  <h1>Vorgang anlegen für <%=ruleValue%></h1>
+
+  <div class="vorgangForm row">
+    <div class="col-sm-3 steuerelement">
+      <h2>Antragsteller</h2>
+      <%if (antragsteller === "natPer") {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+
+      <%}else {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+
+      <%}%>
+
+      </div>
+      <div class="col-sm-3 steuerelement">
+        <h2>Eigentümer</h2>
+        <%if (eigentuemer === "natPer") {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+      <%}else {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+      <%}%>
+      </div>
+
+      <div class="col-sm-3 steuerelement">
+        <h2>Grundstück</h2 <br>
+        <h1>....</h1>
+      </div>
+
+      <div class="col-sm-2 legendeSteuerelemente">
+        <h3><- Bereich Steuerelemente</h3>
+      </div>
+
+    </div>
+
+  </div>
+
+<form action="/vorgangNeu" method="post">
+  <div class="row">
+
+      <div class="col-sm-3">
+
+        <%if (antragsteller === "natPer") {%>
+
+      <%- include("partials/FormularParts/ApplicantNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaApplicant" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaApplicant" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaApplicant" value="invalid" checked>
+
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}
+        else { %>
+
+      <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaApplicant" value="true">
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaApplicant" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantNatPerson") %>
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}%>
+    </div>
+
+    <div class="col-sm-3">
+
+      <%if (eigentuemer === "natPer") {%>
+
+      <%- include("partials/FormularParts/OwnerNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaOwner" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaOwner" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaOwner" value="invalid">
+        <label for="originPoint">Anfallstelle BSR</label><br>
+        <input type="text" name="originPoint" value=""><br>
+
+      </div>
+
+      <%}else{%>
+
+      <%- include("partials/FormularParts/OwnerJurPerson") %>
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaOwner" value="true" >
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaOwner" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerNatPerson") %>
+      </div>
+
+      <%}%>
+
+    </div>
+
+    <div class="col-sm-3">
+
+<%- include("partials/FormularParts/plotForm") %>
+
+    </div>
+
+    <div class="col-sm-3">
+
+      <h3 class="legendeFormularelemente">
+        <- Bereich Formularelemente</h3>
+
+    </div>
+
+  </div>
+  <input class="btn btn-outline-secondary" type="submit" value="Vorgang anlegen" name="VorgangAnlegen">
+  </form>
+  <%break;%>
+  <%case "5501": %>
+  <h1>Vorgang anlegen für <%=ruleValue%></h1>
+
+  <div class="vorgangForm row">
+    <div class="col-sm-3 steuerelement">
+      <h2>Antragsteller</h2>
+      <%if (antragsteller === "natPer") {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+
+      <%}else {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+
+      <%}%>
+
+      </div>
+      <div class="col-sm-3 steuerelement">
+        <h2>Eigentümer</h2>
+        <%if (eigentuemer === "natPer") {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+      <%}else {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+      <%}%>
+      </div>
+
+      <div class="col-sm-3 steuerelement">
+        <h2>Grundstück</h2 <br>
+        <h1>....</h1>
+      </div>
+
+      <div class="col-sm-2 legendeSteuerelemente">
+        <h3><- Bereich Steuerelemente</h3>
+      </div>
+
+    </div>
+
+  </div>
+
+<form action="/vorgangNeu" method="post">
+  <div class="row">
+
+      <div class="col-sm-3">
+
+        <%if (antragsteller === "natPer") {%>
+
+      <%- include("partials/FormularParts/ApplicantNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaApplicant" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaApplicant" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaApplicant" value="invalid" checked>
+
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}
+        else { %>
+
+      <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaApplicant" value="true">
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaApplicant" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantNatPerson") %>
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}%>
+    </div>
+
+    <div class="col-sm-3">
+
+      <%if (eigentuemer === "natPer") {%>
+
+      <%- include("partials/FormularParts/OwnerNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaOwner" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaOwner" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaOwner" value="invalid">
+        <label for="originPoint">Anfallstelle BSR</label><br>
+        <input type="text" name="originPoint" value=""><br>
+
+      </div>
+
+      <%}else{%>
+
+      <%- include("partials/FormularParts/OwnerJurPerson") %>
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaOwner" value="true" >
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaOwner" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerNatPerson") %>
+      </div>
+
+      <%}%>
+
+    </div>
+
+    <div class="col-sm-3">
+
+<%- include("partials/FormularParts/plotForm") %>
+
+    </div>
+
+    <div class="col-sm-3">
+
+      <h3 class="legendeFormularelemente">
+        <- Bereich Formularelemente</h3>
+
+    </div>
+
+  </div>
+  <input class="btn btn-outline-secondary" type="submit" value="Vorgang anlegen" name="VorgangAnlegen">
+  </form>
+  <%break; case "5570" : %>
+  <h1>Vorgang anlegen für <%=ruleValue%></h1>
+
+  <div class="vorgangForm row">
+    <div class="col-sm-3 steuerelement">
+      <h2>Antragsteller</h2>
+      <%if (antragsteller === "natPer") {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+
+      <%}else {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+
+      <%}%>
+
+      </div>
+      <div class="col-sm-3 steuerelement">
+        <h2>Eigentümer</h2>
+        <%if (eigentuemer === "natPer") {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+      <%}else {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+      <%}%>
+      </div>
+
+      <div class="col-sm-3 steuerelement">
+        <h2>Grundstück</h2 <br>
+        <h1>....</h1>
+      </div>
+
+      <div class="col-sm-2 legendeSteuerelemente">
+        <h3><- Bereich Steuerelemente</h3>
+      </div>
+
+    </div>
+
+  </div>
+
+<form action="/vorgangNeu" method="post">
+  <div class="row">
+
+      <div class="col-sm-3">
+
+        <%if (antragsteller === "natPer") {%>
+
+      <%- include("partials/FormularParts/ApplicantNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaApplicant" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaApplicant" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaApplicant" value="invalid" checked>
+
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}
+        else { %>
+
+      <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaApplicant" value="true">
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaApplicant" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantNatPerson") %>
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}%>
+    </div>
+
+    <div class="col-sm-3">
+
+      <%if (eigentuemer === "natPer") {%>
+
+      <%- include("partials/FormularParts/OwnerNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaOwner" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaOwner" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaOwner" value="invalid">
+        <label for="originPoint">Anfallstelle BSR</label><br>
+        <input type="text" name="originPoint" value=""><br>
+
+      </div>
+
+      <%}else{%>
+
+      <%- include("partials/FormularParts/OwnerJurPerson") %>
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaOwner" value="true" >
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaOwner" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerNatPerson") %>
+      </div>
+
+      <%}%>
+
+    </div>
+
+    <div class="col-sm-3">
+
+<%- include("partials/FormularParts/plotForm") %>
+
+    </div>
+
+    <div class="col-sm-3">
+
+      <h3 class="legendeFormularelemente">
+        <- Bereich Formularelemente</h3>
+
+    </div>
+
+  </div>
+  <input class="btn btn-outline-secondary" type="submit" value="Vorgang anlegen" name="VorgangAnlegen">
+  </form>
+
+  <%break; case "5571" : %>
+
+  <h1>Vorgang anlegen für <%=ruleValue%></h1>
+
+  <div class="vorgangForm row">
+    <div class="col-sm-3 steuerelement">
+      <h2>Antragsteller</h2>
+      <%if (antragsteller === "natPer") {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+
+      <%}else {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+
+      <%}%>
+
+      </div>
+      <div class="col-sm-3 steuerelement">
+        <h2>Eigentümer</h2>
+        <%if (eigentuemer === "natPer") {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+      <%}else {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+      <%}%>
+      </div>
+
+      <div class="col-sm-3 steuerelement">
+        <h2>Grundstück</h2 <br>
+        <h1>....</h1>
+      </div>
+
+      <div class="col-sm-2 legendeSteuerelemente">
+        <h3><- Bereich Steuerelemente</h3>
+      </div>
+
+    </div>
+
+  </div>
+
+<form action="/vorgangNeu" method="post">
+  <div class="row">
+
+      <div class="col-sm-3">
+
+        <%if (antragsteller === "natPer") {%>
+
+      <%- include("partials/FormularParts/ApplicantNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaApplicant" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaApplicant" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaApplicant" value="invalid" checked>
+
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}
+        else { %>
+
+      <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaApplicant" value="true">
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaApplicant" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantNatPerson") %>
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}%>
+    </div>
+
+    <div class="col-sm-3">
+
+      <%if (eigentuemer === "natPer") {%>
+
+      <%- include("partials/FormularParts/OwnerNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaOwner" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaOwner" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaOwner" value="invalid">
+        <label for="originPoint">Anfallstelle BSR</label><br>
+        <input type="text" name="originPoint" value=""><br>
+
+      </div>
+
+      <%}else{%>
+
+      <%- include("partials/FormularParts/OwnerJurPerson") %>
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaOwner" value="true" >
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaOwner" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerNatPerson") %>
+      </div>
+
+      <%}%>
+
+    </div>
+
+    <div class="col-sm-3">
+
+<%- include("partials/FormularParts/plotForm") %>
+
+    </div>
+
+    <div class="col-sm-3">
+
+      <h3 class="legendeFormularelemente">
+        <- Bereich Formularelemente</h3>
+
+    </div>
+
+  </div>
+  <input class="btn btn-outline-secondary" type="submit" value="Vorgang anlegen" name="VorgangAnlegen">
+  </form>
+  <%break;%> <%case "5572" : %>
+
+  <h1>Vorgang anlegen für <%=ruleValue%></h1>
+
+  <div class="vorgangForm row">
+    <div class="col-sm-3 steuerelement">
+      <h2>Antragsteller</h2>
+      <%if (antragsteller === "natPer") {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+
+      <%}else {%>
+
+      <form class="" action="/antragsteller" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+
+      <%}%>
+
+      </div>
+      <div class="col-sm-3 steuerelement">
+        <h2>Eigentümer</h2>
+        <%if (eigentuemer === "natPer") {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioNatPer") -%>
+      </form>
+      <%}else {%>
+      <form class="" action="/eigentuemer" method="post">
+        <%- include("partials/steuerelemente/radioJurPer") -%>
+      </form>
+      <%}%>
+      </div>
+
+      <div class="col-sm-3 steuerelement">
+        <h2>Grundstück</h2 <br>
+        <h1>....</h1>
+      </div>
+
+      <div class="col-sm-2 legendeSteuerelemente">
+        <h3><- Bereich Steuerelemente</h3>
+      </div>
+
+    </div>
+
+  </div>
+
+<form action="/vorgangNeu" method="post">
+  <div class="row">
+
+      <div class="col-sm-3">
+
+        <%if (antragsteller === "natPer") {%>
+
+      <%- include("partials/FormularParts/ApplicantNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaApplicant" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaApplicant" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaApplicant" value="invalid" checked>
+
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}
+        else { %>
+
+      <%- include("partials/FormularParts/ApplicantJurPerson") %>
+
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaApplicant" value="true">
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaApplicant" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/ApplicantNatPerson") %>
+        <input type="text" name="rule" value="<%=ruleValue%>">
+      </div>
+
+      <%}%>
+    </div>
+
+    <div class="col-sm-3">
+
+      <%if (eigentuemer === "natPer") {%>
+
+      <%- include("partials/FormularParts/OwnerNatPerson") %>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerJurPerson") %>
+
+        <h4><strong>Vollmacht?</strong></h4>
+        <label for="Choice1">Ja</label>
+        <input type="radio" name="poaOwner" value="true">
+        <br>
+        <label for="Choice2">Nein</label>
+        <input type="radio" name="poaOwner" value="false">
+        <label for="Choice2">ungueltig</label>
+        <input type="radio" name="poaOwner" value="invalid">
+        <label for="originPoint">Anfallstelle BSR</label><br>
+        <input type="text" name="originPoint" value=""><br>
+
+      </div>
+
+      <%}else{%>
+
+      <%- include("partials/FormularParts/OwnerJurPerson") %>
+      <h4><strong>Vollmacht?</strong></h4>
+      <label for="Choice1">Ja</label>
+      <input type="radio" name="poaOwner" value="true" >
+      <br>
+      <label for="Choice2">Nein</label>
+      <input type="radio" name="poaOwner" value="false" checked>
+
+      <div class="hidden">
+        <%- include("partials/FormularParts/OwnerNatPerson") %>
+      </div>
+
+      <%}%>
+
+    </div>
+
+    <div class="col-sm-3">
+
+<%- include("partials/FormularParts/plotForm") %>
+
+    </div>
+
+    <div class="col-sm-3">
+
+      <h3 class="legendeFormularelemente">
+        <- Bereich Formularelemente</h3>
+
+    </div>
+
+  </div>
+  <input class="btn btn-outline-secondary" type="submit" value="Vorgang anlegen" name="VorgangAnlegen">
+  </form>
+
+  <%break;%> <%case "5506" : %>
+ <div class="row"> 
+  <div class="vorgangForm">
+    <form action="/eigentuemer" method="post">
+     <div class="col-sm-4"> 
+      <h3><label name="rule">Ausnahme Straßenreinigung</label></h3>
+      <input type="text" name="street" value="Straße" />
+      <input type="text" name="zipCode" value="PLZ" />
+      <input type="text" name="district" value="Bezirk" />
+      <input type="text" name="district" value="Parkplatz" />
+      <input type="text" name="district" value="Brücke" />
+      <input type="text" name="district" value="Ortsteil" />
+      <textarea
+        class="form-control z-depth-1"
+        value="textAreaExample"
+        rows="3"
+        placeholder="Texteingabe"
+      ></textarea>
+      <label for="exampelFormControlTextarea6">Textfeld</label>
+      <input class="hidden" type="text" name="rule" value="<%=ruleValue%>" />
+      <input
+        class="btn btn-outline-secondary"
+        type="submit"
+        value="Vorgang anlegen"
+        name="VorgangAnlegen"
+      />
+      <%break;}%>
+    </div>
+    </form>
+  </div>
+</div>
+
+  <%- include("partials/footer") -%>

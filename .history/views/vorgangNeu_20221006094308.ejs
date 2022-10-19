@@ -1935,20 +1935,7 @@
 
 <%- include("partials/FormularParts/plotForm") %>
 
- </div> 
-
-    <div class="col-sm-3">
-
-      <h3 class="legendeFormularelemente">
-        <- Bereich Formularelemente</h3>
-
-    </div>
-
-  </div>
-  <input class="btn btn-outline-secondary" type="submit" value="Vorgang anlegen" name="VorgangAnlegen">
-  </form>
-
-</div>
+    <!-- </div>
 
     <div class="col-sm-3">
 
@@ -1962,12 +1949,35 @@
   </form>
 
   <%break;%> <%case "5506" : %>
-
+ <div class="row"> 
+  <div class="vorgangForm">
+    <form action="/eigentuemer" method="post">
+     <div class="col-sm-4"> 
+      <h3><label name="rule">Ausnahme Straßenreinigung</label></h3>
+      <input type="text" name="street" value="Straße" />
+      <input type="text" name="zipCode" value="PLZ" />
+      <input type="text" name="district" value="Bezirk" />
+      <input type="text" name="district" value="Parkplatz" />
+      <input type="text" name="district" value="Brücke" />
+      <input type="text" name="district" value="Ortsteil" />
+      <textarea
+        class="form-control z-depth-1"
+        value="textAreaExample"
+        rows="3"
+        placeholder="Texteingabe"
+      ></textarea>
+      <label for="exampelFormControlTextarea6">Textfeld</label>
+      <input class="hidden" type="text" name="rule" value="<%=ruleValue%>" />
+      <input
+        class="btn btn-outline-secondary"
+        type="submit"
+        value="Vorgang anlegen"
+        name="VorgangAnlegen"
       />
       <%break;}%>
     </div>
     </form>
   </div>
-</div> 
+</div> -->
 
   <%- include("partials/footer") -%>
